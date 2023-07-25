@@ -107,6 +107,7 @@
       <button class="go-button" id="button-niji">Niji</button>
       <button class="go-button" id="button-3d">3D</button>
       <button class="go-button" id="button-cartoon">Cartoon</button>
+      <button class="go-button" id="button-tile">Tile</button>
       <input type="text" id="aspect-ratio" placeholder="Aspect Ratio (e.g., 16:9)">
     </div>
   </div>
@@ -127,6 +128,8 @@
     const aspectRatioField = document.getElementById('aspect-ratio');
     const copyButton = document.getElementById('copy-button');
     const clearButton = document.getElementById('clear-button'); // New clear button
+    const buttonTile = document.getElementById('button-tile');
+
   
     goButton.addEventListener('click', () => {
       manipulateText('8k', aspectRatioField.value.trim());
@@ -192,6 +195,11 @@
     buttonCartoon.addEventListener('click', () => {
       const aspectRatio = aspectRatioField.value.trim() || '16:9';
       manipulateText('8k, cartoon', aspectRatio);
+    });
+    buttonTile.addEventListener('click', () => {
+      const aspectRatio = aspectRatioField.value.trim() || '16:9';
+      manipulateText('8k', aspectRatio);
+      appendTextToOutput(' --tile');
     });
   </script>
   
