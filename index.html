@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Text Manipulation Tool</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f2f2f2;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .input-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    #input-text {
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 300px;
+    }
+
+    .go-button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .buttons-container {
+      display: flex;
+      gap: 10px;
+    }
+
+    .text-result {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 20px;
+      width: 400px;
+      background-color: #fff;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    #output-text {
+      font-size: 16px;
+      width: 100%;
+      height: 200px;
+      resize: none;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+    }
+
+    .copy-button {
+      background-color: #2196F3;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .pressed {
+      background-color: #2ECC71;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="input-container">
+      <input type="text" id="input-text" placeholder="Paste or type your text here">
+      <button class="go-button" id="go-button">Go</button>
+      <button class="go-button" id="paste-button" style="margin-right: 10px;">Paste</button>
+    </div>
+
+    <div class="buttons-container">
+      <button class="go-button" id="button-photorealistic">Photorealistic</button>
+      <button class="go-button" id="button-niji">Niji</button>
+      <input type="text" id="aspect-ratio" placeholder="Aspect Ratio (e.g., 16:9)">
+    </div>
+  </div>
+
+  <div class="text-result">
+    <textarea id="output-text" readonly></textarea>
+    <button class="copy-button" id="copy-button">Copy All</button>
+    <button class="go-button" id="clear-button" style="background-color: red; color: white;">Clear</button>
+  </div>
+
+  <script>
+    const inputField = document.getElementById('input-text');
+    const outputField = document.getElementById('output-text');
+    const goButton = document.getElementById('go-button');
+    const pasteButton = document.getElementById('paste-button');
+    const buttonPhotorealistic = document.getElementById('button-photorealistic');
+    const buttonNiji = document.getElementById('button-niji');
+    const aspectRatioField = document.getElementById('aspect-ratio');
+    const copyButton = document.getElementById('copy-button');
+    const clearButton = document.getElementById('clear-button'); // New clear button
+  
+    goButton.addEventListener('click', () => {
+      manipulateText('8k', aspectRatioField.value.trim());
+    });
+  
+    pasteButton.addEventListener('click', () => {
+      navigator.clipboard.readText().then((clipboardText) => {
+        inputField.value = clipboardText;
+        manipulateText('8k', aspectRatioField.value.trim());
+      }).catch((err) => {
+        console.error('Failed to read clipboard text: ', err);
+      });
+    });
+  
+    buttonPhotorealistic.addEventListener('click', () => {
+      const aspectRatio = aspectRatioField.value.trim() || '16:9';
+      manipulateText('8k, photorealistic', aspectRatio);
+    });
+  
+    buttonNiji.addEventListener('click', () => {
+      const aspectRatio = aspectRatioField.value.trim() || '16:9';
+      manipulateText('8k, --niji', aspectRatio);
+    });
+  
+    copyButton.addEventListener('click', copyOutput);
+  
+    aspectRatioField.addEventListener('input', () => {
+      manipulateText('8k', aspectRatioField.value.trim());
+    });
+  
+    function getDefaultText(text, kValue, aspectRatio) {
+      return `/imagine prompt:${text}, ${kValue} --ar ${aspectRatio} --upbeta`;
+    }
+  
+    function manipulateText(kValue, aspectRatio) {
+      const inputText = inputField.value.trim();
+      const newKValue = kValue;
+      const newAspectRatio = aspectRatio ? aspectRatio : '16:9';
+      const newText = getDefaultText(inputText, newKValue, newAspectRatio);
+      updateOutput(newText);
+    }
+  
+    function updateOutput(text) {
+      outputField.value = text;
+    }
+  
+    function copyOutput() {
+      outputField.select();
+      document.execCommand('copy');
+    }
+    clearButton.addEventListener('click', () => {
+      inputField.value = '';
+      outputField.value = '';
+    });
+  </script>
+  
+  
+  
+</body>
+</html>
