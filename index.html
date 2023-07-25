@@ -105,6 +105,8 @@
     <div class="buttons-container">
       <button class="go-button" id="button-photorealistic">Photorealistic</button>
       <button class="go-button" id="button-niji">Niji</button>
+      <button class="go-button" id="button-3d">3D</button>
+      <button class="go-button" id="button-cartoon">Cartoon</button>
       <input type="text" id="aspect-ratio" placeholder="Aspect Ratio (e.g., 16:9)">
     </div>
   </div>
@@ -178,6 +180,18 @@
     clearButton.addEventListener('click', () => {
       inputField.value = '';
       outputField.value = '';
+    });
+    const button3D = document.getElementById('button-3d');
+    const buttonCartoon = document.getElementById('button-cartoon');
+
+    button3D.addEventListener('click', () => {
+      const aspectRatio = aspectRatioField.value.trim() || '16:9';
+      manipulateText('8k, 3D render', aspectRatio);
+    });
+
+    buttonCartoon.addEventListener('click', () => {
+      const aspectRatio = aspectRatioField.value.trim() || '16:9';
+      manipulateText('8k, cartoon', aspectRatio);
     });
   </script>
   
